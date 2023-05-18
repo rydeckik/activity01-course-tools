@@ -21,6 +21,21 @@ We will see how naming code chunks makes our life easier later in this document 
 
 ```{r simple-calculations}
 
+# Practicing addition
+2 + 5
+
+# Creating an integer vector with values 1 through 9
+int_vect <- c(1:9)
+int_vect
+
+# creating a character vector with letters a through q
+char_vect <- letters[1:17]
+char_vect
+
+# The number of letters occurring after d through q
+length(char_vect) - 4
+
+
 ```
 
 In the code chunk named "simple-calculations", add the R code that does the following:
