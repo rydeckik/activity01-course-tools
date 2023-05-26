@@ -19,4 +19,8 @@ I browsed many of the websites/blogs/portfolios on Bradford's list.
 
 Right now...
 
-
+ ```{r library-example, eval = FALSE}
+  library(tidyverse)
+  library(tidymodels)
+  ```
+`{tidymodels}`
