@@ -92,7 +92,8 @@ If you would like to try the *ISLR* labs using these two packages instead of bas
 
 ```
 
-![check-in](README-img/noun-magnifying-glass.png) **Check in**
+
+![check-in](../README-img/noun-magnifying-glass.png) **Check in**
 
 Test your GitHub skills by staging, committing, and pushing your changes to GitHub and verify that your changes have been added to your GitHub repository.
 
@@ -294,7 +295,7 @@ To do this, we need to specify the value(s) that we want to predict so we will c
 I create this in the code chunk below, but for each index integer value.
 
 ```{r pred-df}
-pred_df <- tibble(
+pred_df <- tibble::tibble(
   pf_expression_control = 0:10
 )
 ```
@@ -362,9 +363,9 @@ Answer the following question:
 
 **Nearly normal residuals**: To check this condition, we can look at a histogram of the residuals.
 
-- Create a new R code chunk and type the following code.
+- In the code chunk below titled `residual-histogram`, replace "verbatim" with "r" just before the code chunk title.
   
-```{verbatim fitted-residual}
+```{r histogram}
 ggplot(data = slr_aug, aes(x = .resid)) +
   geom_histogram(binwidth = 0.25) +
   xlab("Residuals")
