@@ -127,7 +127,42 @@ text](https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/index.html).
     <img src="../README-img/knit-icon.png" alt="knit" width = "20"/>
     icon your Rmd document to verify that no errors occur.
 
-![check-in](README-img/noun-magnifying-glass.png) **Check in**
+``` r
+library(tidyverse)
+```
+
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.2     ✔ readr     2.1.4
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+    ## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+    ## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+    ## ✔ purrr     1.0.1     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
+library(tidymodels)
+```
+
+    ## ── Attaching packages ────────────────────────────────────── tidymodels 1.0.0 ──
+    ## ✔ broom        1.0.4     ✔ rsample      1.1.0
+    ## ✔ dials        1.0.0     ✔ tune         1.0.0
+    ## ✔ infer        1.0.3     ✔ workflows    1.0.0
+    ## ✔ modeldata    1.0.0     ✔ workflowsets 1.0.0
+    ## ✔ parsnip      1.0.1     ✔ yardstick    1.0.0
+    ## ✔ recipes      1.0.1     
+    ## ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+    ## ✖ scales::discard() masks purrr::discard()
+    ## ✖ dplyr::filter()   masks stats::filter()
+    ## ✖ recipes::fixed()  masks stringr::fixed()
+    ## ✖ dplyr::lag()      masks stats::lag()
+    ## ✖ yardstick::spec() masks readr::spec()
+    ## ✖ recipes::step()   masks stats::step()
+    ## • Use tidymodels_prefer() to resolve common conflicts.
+
+![check-in](../README-img/noun-magnifying-glass.png) **Check in**
 
 Test your GitHub skills by staging, committing, and pushing your changes
 to GitHub and verify that your changes have been added to your GitHub
@@ -149,11 +184,26 @@ that reads in the above linked CSV file by doing the following:
 -   Assign this data set into a data frame named `hfi` (short for “Human
     Freedom Index”).
 
+``` r
+hfi <- readr::read_csv('https://www.openintro.org/data/csv/hfi.csv')
+```
+
+    ## Rows: 1458 Columns: 123
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr   (3): ISO_code, countries, region
+    ## dbl (120): year, pf_rol_procedural, pf_rol_civil, pf_rol_criminal, pf_rol, p...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
 After doing this and viewing the loaded data, answer the following
 questions:
 
 1.  What are the dimensions of the dataset? What does each row
     represent?
+
+A: There are 123 dimensions and each row represents a country.
 
 The dataset spans a lot of years. We are only interested in data from
 year 2016. In the R code chunk below titled `hfi-2016`, type the code
@@ -161,6 +211,11 @@ that does the following:
 
 -   Filter the data `hfi` data frame for year 2016, and
 -   Assigns the result to a data frame named `hfi_2016`.
+
+``` r
+hfi_2016 <- hfi %>% 
+  filter(year == 2016)
+```
 
 ### 1. Identify our research question(s)
 
@@ -184,27 +239,72 @@ the following tasks.
     plot to display the distribution of the political pressures and
     controls on media content index, `pf_expression_control`?
 
+A: To look at the distribution of `pf_score`, I would use a histogram. I
+would also use a histogram to look at the distribution of
+`pf_expression_control`.
+
 -   In the R code chunk below titled `univariable-plots`, type the R
     code that displays this plot for `pf_score`.
 -   In the R code chunk below titled `univariable-plots`, type the R
     code that displays this plot for `pf_expression_control`.
 
+``` r
+q2 <- ggplot(data = hfi_2016)
+
+q2 + geom_histogram(aes(x = pf_score))
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](activity01-day03-slr_files/figure-gfm/distribution-plots-1.png)<!-- -->
+
+``` r
+q2 + geom_histogram(aes(x = pf_expression_control))
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](activity01-day03-slr_files/figure-gfm/distribution-plots-2.png)<!-- -->
+
 4.  Comment on each of these two distributions. Be sure to describe
     their centers, spread, shape, and any potential outliers.
 
-5.  What type of plot would you use to display the relationship between
+A: pf\_score - There is a slight skew to the left. - There are potential
+outliers in the tail where `pf_score` is between 2 and 3. - The center
+of the data/peak of the histogram is at approximately 6.5. - Spread of
+the data is between values 2 and 10.
+
+A: pf\_expression\_control - Spread is between 0 and 8. - Increments in
+1.25. - data peaks around 4. - Roughly unimodal in shape. - Data is
+approximately normally distributed.
+
+3.  What type of plot would you use to display the relationship between
     the personal freedom score, `pf_score`, and the political pressures
     and controls on media content index,`pf_expression_control`?
+
+A: I would use a scatterplot to display the relationship between
+`pf_score` and `pf_expression_control`.
 
 -   In the R code chunk below titled `relationship-plot`, plot this
     relationship using the variable `pf_expression_control` as the
     predictor/explanatory variable.
+
+``` r
+q2 +
+geom_point(aes(x = pf_expression_control, y = pf_score))
+```
+
+![](activity01-day03-slr_files/figure-gfm/relationship-plot-1.png)<!-- -->
 
 4.  Does the relationship look linear? If you knew a country’s
     `pf_expression_control`, or its score out of 10, with 0 being the
     most, of political pressures and controls on media content, would
     you be comfortable using a linear model to predict the personal
     freedom score?
+
+A: The relationship in the above scatterplot does look linear. If I
+recall correctly, certain conditions need to be met before we attempt a
+linear regression model.
 
 #### Challenge
 
@@ -218,6 +318,42 @@ each of those terms.
 What numerical summary would you use to describe the relationship
 between two numerical variables? (hint: explore the `cor` function from
 Base R)
+
+``` r
+hfi_2016 %>% 
+  select(pf_score) %>% 
+  summarise(mean = mean(pf_score), 
+            median = median(pf_score), 
+            sd = sd(pf_score), 
+            min = min(pf_score), 
+            max = max(pf_score))
+```
+
+    ## # A tibble: 1 × 5
+    ##    mean median    sd   min   max
+    ##   <dbl>  <dbl> <dbl> <dbl> <dbl>
+    ## 1  6.98   6.93  1.49  2.17  9.40
+
+``` r
+hfi_2016 %>% 
+  select(pf_expression_control) %>% 
+  summarise(mean = mean(pf_expression_control), 
+            median = median(pf_expression_control), 
+            sd = sd(pf_expression_control), 
+            min = min(pf_expression_control), 
+            max = max(pf_expression_control))
+```
+
+    ## # A tibble: 1 × 5
+    ##    mean median    sd   min   max
+    ##   <dbl>  <dbl> <dbl> <dbl> <dbl>
+    ## 1  4.98      5  2.32  0.25  9.25
+
+``` r
+cor(hfi_2016$pf_score, hfi_2016$pf_expression_control)
+```
+
+    ## [1] 0.8450646
 
 ### 3. Fit a simple linear regression model
 
@@ -233,13 +369,17 @@ To begin, we will create a `{parsnip}` specification for a linear model.
 -   In the code chunk below titled `parsnip-spec`, replace “verbatim”
     with “r” just before the code chunk title.
 
-``` default
+``` r
 lm_spec <- linear_reg() %>%
   set_mode("regression") %>%
   set_engine("lm")
 
 lm_spec
 ```
+
+    ## Linear Regression Model Specification (regression)
+    ## 
+    ## Computational engine: lm
 
 Note that the `set_mode("regression")` is really unnecessary/redundant
 as linear models (`"lm"`) can only be regression models. It is better to
@@ -260,12 +400,18 @@ knitted document to see how this syntax appears.
 -   In the code chunk below titled `fit-lm`, replace “verbatim” with “r”
     just before the code chunk title.
 
-``` default
+``` r
 slr_mod <- lm_spec %>% 
   fit(pf_score ~ pf_expression_control, data = hfi_2016)
 
 tidy(slr_mod)
 ```
+
+    ## # A tibble: 2 × 5
+    ##   term                  estimate std.error statistic  p.value
+    ##   <chr>                    <dbl>     <dbl>     <dbl>    <dbl>
+    ## 1 (Intercept)              4.28     0.149       28.8 4.23e-65
+    ## 2 pf_expression_control    0.542    0.0271      20.0 2.31e-45
 
 The above code fits our SLR model, then provides a `tidy` parameter
 estimates table.
@@ -274,10 +420,16 @@ estimates table.
     parameters. That is, replace “intercept” and “slope” with the
     appropriate values
 
-$\hat{\texttt{pf\score}} = intercept + slope \times \texttt{pf\_expression\_control}$
+$\hat{\texttt{pf\score}} = 4.28 + 0.54 \times \texttt{pf\_expression\_control}$
 
 6.  Interpret each of the estimated parameters from (5) in the context
     of this research question. That is, what do these values represent?
+
+When `pf_expression_control` equals 0, we can expect `pf_score` to be
+4.28.
+
+For every1 unit increase in `pf_expression_control`, we can expect
+`pf_score` to increase 0.54 units.
 
 ### 4. Assess our model
 
@@ -301,17 +453,33 @@ is also where `tidy` is from) to access this information.
 -   In the code chunk below titled `glance-lm`, replace “verbatim” with
     “r” just before the code chunk title.
 
-``` default
+``` r
 glance(slr_mod)
 ```
+
+    ## # A tibble: 1 × 12
+    ##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+    ##       <dbl>         <dbl> <dbl>     <dbl>    <dbl> <dbl>  <dbl> <dbl> <dbl>
+    ## 1     0.714         0.712 0.799      400. 2.31e-45     1  -193.  391.  400.
+    ## # ℹ 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 
 After doing this and running the code, answer the following questions:
 
 7.  What is the value of $R^2$ for this model?
 
+$R^2$ = 0.71.
+
 8.  What does this value mean in the context of this model? Think about
     what would a “good” value of $R^2$ would be? Can/should this value
     be “perfect”?
+
+Putting our $R^2$ into context, we can say that `pf_expression_control`
+accounts for 0.71 of the variability seen in this model. In past
+classes, we got excited when $R^2$ got to be around 0.8 (with 0.75 being
+acceptable). However, considering this is a simple linear regression
+model, 0.71 seems respectable. We should not aim for a perfect $R^2$!
+Adding more variables to the model tends to artificially increase this
+value. We also run the risk of overfitting.
 
 ### 5. Predict
 
@@ -335,6 +503,16 @@ least squares line for `slr_mod` laid on top of the points.
     around your bands (hint: look at the help documentation for the
     `geom_smooth` layer).
 
+``` r
+ggplot(data = hfi_2016, aes(x = pf_expression_control, y = pf_score)) +
+  geom_point() +
+  geom_smooth(method = lm)
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](activity01-day03-slr_files/figure-gfm/lm-line-1.png)<!-- -->
+
 This line can be used to predict $y$ at any value of $x$. When
 predictions are made for values of $x$ that are beyond the range of the
 observed data, it is referred to as *extrapolation* and is not usually
@@ -347,6 +525,9 @@ Answer the following question:
     the actual data, how would they predict a country’s personal freedom
     school when their `pf_expression_control` is an index of 3? What
     should they predict?
+
+I imgain they would predict a `pf_score` of about 6.2 or 6.25 if the
+`pf_expression_control` is an index of 3.
 
 Now, we will check your math!
 
@@ -367,18 +548,35 @@ these indices:
 -   In the code chunk below titled `predict`, replace “verbatim” with
     “r” just before the code chunk title.
 
-``` default
+``` r
 pred_df %>% 
   mutate(
     pred_value = predict(slr_mod, new_data = pred_df) %>% pull(.pred)
   )
 ```
 
+    ## # A tibble: 11 × 2
+    ##    pf_expression_control pred_value
+    ##                    <int>      <dbl>
+    ##  1                     0       4.28
+    ##  2                     1       4.83
+    ##  3                     2       5.37
+    ##  4                     3       5.91
+    ##  5                     4       6.45
+    ##  6                     5       6.99
+    ##  7                     6       7.53
+    ##  8                     7       8.08
+    ##  9                     8       8.62
+    ## 10                     9       9.16
+    ## 11                    10       9.70
+
 Note that I am making it easier to see what our *x* value and
 *predicted* values are. I encourage you to go through each line above
 and describe what that line is doing.
 
 10. How did your by-hand calculation go?
+
+My by-hand calculation was a little bit high.
 
 ### Model diagnostics
 
@@ -396,11 +594,32 @@ these.
 -   In the code chunk below titled `augment`, replace “verbatim” with
     “r” just before the code chunk title.
 
-``` default
-slr_aug <- augment(slr_mod)
+``` r
+slr_aug <- augment(slr_mod, hfi_2016)
 
 slr_aug
 ```
+
+    ## # A tibble: 162 × 125
+    ##     year ISO_code countries  region               pf_rol_procedural pf_rol_civil
+    ##    <dbl> <chr>    <chr>      <chr>                            <dbl>        <dbl>
+    ##  1  2016 ALB      Albania    Eastern Europe                    6.66         4.55
+    ##  2  2016 DZA      Algeria    Middle East & North…             NA           NA   
+    ##  3  2016 AGO      Angola     Sub-Saharan Africa               NA           NA   
+    ##  4  2016 ARG      Argentina  Latin America & the…              7.10         5.79
+    ##  5  2016 ARM      Armenia    Caucasus & Central …             NA           NA   
+    ##  6  2016 AUS      Australia  Oceania                           8.44         7.53
+    ##  7  2016 AUT      Austria    Western Europe                    8.97         7.87
+    ##  8  2016 AZE      Azerbaijan Caucasus & Central …             NA           NA   
+    ##  9  2016 BHS      Bahamas    Latin America & the…              6.93         6.01
+    ## 10  2016 BHR      Bahrain    Middle East & North…             NA           NA   
+    ## # ℹ 152 more rows
+    ## # ℹ 119 more variables: pf_rol_criminal <dbl>, pf_rol <dbl>,
+    ## #   pf_ss_homicide <dbl>, pf_ss_disappearances_disap <dbl>,
+    ## #   pf_ss_disappearances_violent <dbl>, pf_ss_disappearances_organized <dbl>,
+    ## #   pf_ss_disappearances_fatalities <dbl>, pf_ss_disappearances_injuries <dbl>,
+    ## #   pf_ss_disappearances <dbl>, pf_ss_women_fgm <dbl>,
+    ## #   pf_ss_women_missing <dbl>, pf_ss_women_inheritance_widows <dbl>, …
 
 ![check-in](../README-img/noun-magnifying-glass.png) **Check in**
 
@@ -415,13 +634,15 @@ vs. fitted (predicted) values.
 -   In the code chunk below titled `fitted-residual`, replace “verbatim”
     with “r” just before the code chunk title.
 
-``` default
-ggplot(data = slr_aug, aes(x = .fitted, y = .resid)) +
+``` r
+ggplot(data = slr_aug, aes(x = .pred, y = .resid)) +
   geom_point() +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   xlab("Fitted values") +
   ylab("Residuals")
 ```
+
+![](activity01-day03-slr_files/figure-gfm/fitted-residual-1.png)<!-- -->
 
 Notice here that `slr_aug` can also serve as a data set because stored
 within it are the fitted values ($\hat{y}$) and the residuals. Also note
@@ -440,20 +661,29 @@ Answer the following question:
 **Nearly normal residuals**: To check this condition, we can look at a
 histogram of the residuals.
 
--   Create a new R code chunk and type the following code.
+-   In the code chunk below titled `residual-histogram`, replace
+    “verbatim” with “r” just before the code chunk title.
 
-``` default
+``` r
 ggplot(data = slr_aug, aes(x = .resid)) +
   geom_histogram(binwidth = 0.25) +
   xlab("Residuals")
 ```
+
+![](activity01-day03-slr_files/figure-gfm/histogram-1.png)<!-- -->
 
 Answer the following question:
 
 12. Based on the histogram, does the nearly normal residuals condition
     appear to be violated? Why or why not?
 
+Yes, the residuals appear to be approximately normal in their
+distribution (there is a slight skew to the left).
+
 **Constant variability**:
 
 13. Based on the residuals vs. fitted plot, does the constant
     variability condition appear to be violated? Why or why not?
+
+The constant variability condidion appears to be met. There is no
+discernable shape in the residuals vs. fitted plot (snowstorm!).
