@@ -160,7 +160,7 @@ library(tidymodels)
     ## ✖ dplyr::lag()      masks stats::lag()
     ## ✖ yardstick::spec() masks readr::spec()
     ## ✖ recipes::step()   masks stats::step()
-    ## • Use tidymodels_prefer() to resolve common conflicts.
+    ## • Learn how to get started at https://www.tidymodels.org/start/
 
 ![check-in](../README-img/noun-magnifying-glass.png) **Check in**
 
@@ -203,7 +203,7 @@ questions:
 1.  What are the dimensions of the dataset? What does each row
     represent?
 
-A: There are 123 dimensions and each row represents a country.
+**Answer:** There are 123 dimensions and each row represents a country.
 
 The dataset spans a lot of years. We are only interested in data from
 year 2016. In the R code chunk below titled `hfi-2016`, type the code
@@ -239,8 +239,8 @@ the following tasks.
     plot to display the distribution of the political pressures and
     controls on media content index, `pf_expression_control`?
 
-A: To look at the distribution of `pf_score`, I would use a histogram. I
-would also use a histogram to look at the distribution of
+**Answer:** To check the distribution of `pf_score`, I would use a
+histogram. I would also use a histogram to look at the distribution of
 `pf_expression_control`.
 
 -   In the R code chunk below titled `univariable-plots`, type the R
@@ -269,21 +269,22 @@ q2 + geom_histogram(aes(x = pf_expression_control))
 4.  Comment on each of these two distributions. Be sure to describe
     their centers, spread, shape, and any potential outliers.
 
-A: pf\_score - There is a slight skew to the left. - There are potential
-outliers in the tail where `pf_score` is between 2 and 3. - The center
-of the data/peak of the histogram is at approximately 6.5. - Spread of
-the data is between values 2 and 10.
+**Answer:** Looking at the histogram for `pf_score`, we can see that
+there is a slight skew to the left. There are potential outliers in the
+left tail where `pf_score` is between 2 and 3 and then one around 9.5.
+The center/peak of the data is at approximately 6.5. It is Spread
+between values 2 and 10.
 
-A: pf\_expression\_control - Spread is between 0 and 8. - Increments in
-1.25. - data peaks around 4. - Roughly unimodal in shape. - Data is
-approximately normally distributed.
+Looking at the histogram for `pf_expression_control`, the data
+distribution appears to be approximately normal. The center/median of
+the data appears to be around 4 while it is spread between 0 and 8.
 
 3.  What type of plot would you use to display the relationship between
     the personal freedom score, `pf_score`, and the political pressures
     and controls on media content index,`pf_expression_control`?
 
-A: I would use a scatterplot to display the relationship between
-`pf_score` and `pf_expression_control`.
+**Answer**: I would use a scatterplot to display the relationship
+between `pf_score` and `pf_expression_control`.
 
 -   In the R code chunk below titled `relationship-plot`, plot this
     relationship using the variable `pf_expression_control` as the
@@ -302,9 +303,10 @@ geom_point(aes(x = pf_expression_control, y = pf_score))
     you be comfortable using a linear model to predict the personal
     freedom score?
 
-A: The relationship in the above scatterplot does look linear. If I
-recall correctly, certain conditions need to be met before we attempt a
-linear regression model.
+**Answer:** The relationship in the above scatterplot does look linear.
+If I recall correctly, certain conditions (normality,
+heteroscedasticity) need to be met before we can attempt a linear
+regression model.
 
 #### Challenge
 
@@ -354,6 +356,19 @@ cor(hfi_2016$pf_score, hfi_2016$pf_expression_control)
 ```
 
     ## [1] 0.8450646
+
+**More detailed descriptions:** Looking at the descriptive statistics
+for `pf_score`, we can see that there is a mean of 6.98 and a median of
+6.93, which confirms a normal distribution. The standard deviation is
+1.49, meaning that this is the typical distance between each data point
+and the mean. The min and max values tell us that the data falls between
+the values 2.17 and 9.4.
+
+Looking at the descriptive statistics for `pf_expression_control`, we
+can see that the mean (4.98) and median (5) are almost the same, which
+again supports a normal distribution. The SD is 2.32, so the data does
+not cluster as close to the mean as they did for `pf_score`, and it is
+also more spread out with a min of 0.25 and max of 9.25.
 
 ### 3. Fit a simple linear regression model
 
@@ -425,10 +440,10 @@ $\hat{\texttt{pf\score}} = 4.28 + 0.54 \times \texttt{pf\_expression\_control}$
 6.  Interpret each of the estimated parameters from (5) in the context
     of this research question. That is, what do these values represent?
 
-When `pf_expression_control` equals 0, we can expect `pf_score` to be
-4.28.
+**Answer:** When `pf_expression_control` equals 0, we can expect
+`pf_score` to equal 4.28.
 
-For every1 unit increase in `pf_expression_control`, we can expect
+For every 1 unit increase in `pf_expression_control`, we can expect
 `pf_score` to increase 0.54 units.
 
 ### 4. Assess our model
@@ -467,19 +482,19 @@ After doing this and running the code, answer the following questions:
 
 7.  What is the value of $R^2$ for this model?
 
-$R^2$ = 0.71.
+**Answer:** $R^2$ = 0.71.
 
 8.  What does this value mean in the context of this model? Think about
     what would a “good” value of $R^2$ would be? Can/should this value
     be “perfect”?
 
-Putting our $R^2$ into context, we can say that `pf_expression_control`
-accounts for 0.71 of the variability seen in this model. In past
-classes, we got excited when $R^2$ got to be around 0.8 (with 0.75 being
-acceptable). However, considering this is a simple linear regression
-model, 0.71 seems respectable. We should not aim for a perfect $R^2$!
-Adding more variables to the model tends to artificially increase this
-value. We also run the risk of overfitting.
+**Answer:** Putting our $R^2$ into context, we can say that
+`pf_expression_control` accounts for 0.71 of the variability seen in
+this model. In past classes, we got excited when $R^2$ got to be around
+0.8 (with 0.75 being acceptable). However, considering this is a simple
+linear regression model, 0.71 seems respectable. We should not aim for a
+perfect $R^2$! Adding more variables to the model tends to artificially
+increase this value. We also run the risk of overfitting.
 
 ### 5. Predict
 
@@ -526,8 +541,8 @@ Answer the following question:
     school when their `pf_expression_control` is an index of 3? What
     should they predict?
 
-I imgain they would predict a `pf_score` of about 6.2 or 6.25 if the
-`pf_expression_control` is an index of 3.
+**Answer:** I imgain they would predict a `pf_score` of about 6.2 or
+6.25 if the `pf_expression_control` is at an index of 3.
 
 Now, we will check your math!
 
@@ -576,7 +591,7 @@ and describe what that line is doing.
 
 10. How did your by-hand calculation go?
 
-My by-hand calculation was a little bit high.
+**Answer:** My by-hand calculation was a little bit high.
 
 ### Model diagnostics
 
@@ -677,13 +692,15 @@ Answer the following question:
 12. Based on the histogram, does the nearly normal residuals condition
     appear to be violated? Why or why not?
 
-Yes, the residuals appear to be approximately normal in their
-distribution (there is a slight skew to the left).
+**Answer:** No, the nearly normal residuals condition does not appear to
+be violated. There does appear to be a slight skew to the left, but the
+criteria is “nearly normal”. So, all things considered, I think the
+condition is met.
 
 **Constant variability**:
 
 13. Based on the residuals vs. fitted plot, does the constant
     variability condition appear to be violated? Why or why not?
 
-The constant variability condidion appears to be met. There is no
-discernable shape in the residuals vs. fitted plot (snowstorm!).
+**Answer:** The constant variability condidion appears to be met. There
+is no dicernable shape in the residuals vs. fitted plot (snowstorm!).
